@@ -5,7 +5,7 @@ const parallel = require('async/parallel')
 module.exports = {
   getAll(req, res) {
     const options = {
-      baseQuery: "SELECT product.*, image.image as image FROM product LEFT JOIN image ON image.id_product = product.id AND image.deleted_at IS NULL",
+      baseQuery: "SELECT product.*, category.name as category_name, image.image as image FROM product LEFT JOIN category ON category.id = product.id_category LEFT JOIN image ON image.id_product = product.id AND image.deleted_at IS NULL",
       groupBy: 'product.id'
     }
   
