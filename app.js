@@ -1,12 +1,20 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const mysql = require('mysql')
 
 const config = require('./config')
-const routeV1 = require('./route/v1')
-const route404 = require('./controller/404')
 
 const app = express()
+
+const db = mysql.createConnection(config.db.mysql)
+
+db.connect((err) => {
+  if (err) throw err
+  console.log('DB Connected');
+})
+
+global.db = db
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -20,6 +28,9 @@ app.use((req, res, next) => {
   
   next()
 })
+
+const routeV1 = require('./route/v1')
+const route404 = require('./controller/404')
 
 app.use('/v1', routeV1)
 
