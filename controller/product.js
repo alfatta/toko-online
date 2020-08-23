@@ -118,17 +118,24 @@ module.exports = {
   insertImage(req, res) {
     let {image} = req.body
     let data = {image, id_product: req.params.id}
-    dbRepo.insert('image', data, (err, result) => {
-      if (err) {
-        res.status(err.code)
-        res.send(response('ERROR', err.message))
+    dbRepo.getById('product', req.params.id, (errX, resultX) => {
+      if (errX) {
+        res.status(errX.code)
+        res.send(response('ERROR', errX.message))
       } else {
-        dbRepo.getById('image', result.insertId, (err2, result2) => {
-          if (err2) {
-            res.status(err2.code)
-            res.send(response('ERROR', err2.message))
+        dbRepo.insert('image', data, (err, result) => {
+          if (err) {
+            res.status(err.code)
+            res.send(response('ERROR', err.message))
           } else {
-            res.send(response('SUCCESS', null, result2))
+            dbRepo.getById('image', result.insertId, (err2, result2) => {
+              if (err2) {
+                res.status(err2.code)
+                res.send(response('ERROR', err2.message))
+              } else {
+                res.send(response('SUCCESS', null, result2))
+              }
+            })
           }
         })
       }
@@ -137,17 +144,25 @@ module.exports = {
   insertSpecification(req, res) {
     let {key, value} = req.body
     let data = {key, value, id_product: req.params.id}
-    dbRepo.insert('specification', data, (err, result) => {
-      if (err) {
-        res.status(err.code)
-        res.send(response('ERROR', err.message))
+
+    dbRepo.getById('product', req.params.id, (errX, resultX) => {
+      if (errX) {
+        res.status(errX.code)
+        res.send(response('ERROR', errX.message))
       } else {
-        dbRepo.getById('specification', result.insertId, (err2, result2) => {
-          if (err2) {
-            res.status(err2.code)
-            res.send(response('ERROR', err2.message))
+        dbRepo.insert('specification', data, (err, result) => {
+          if (err) {
+            res.status(err.code)
+            res.send(response('ERROR', err.message))
           } else {
-            res.send(response('SUCCESS', null, result2))
+            dbRepo.getById('specification', result.insertId, (err2, result2) => {
+              if (err2) {
+                res.status(err2.code)
+                res.send(response('ERROR', err2.message))
+              } else {
+                res.send(response('SUCCESS', null, result2))
+              }
+            })
           }
         })
       }
