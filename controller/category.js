@@ -20,7 +20,30 @@ module.exports = {
     })
   },
   getProduct(req, res) {
+    const options = {
+      filter: {
+        by: {
+          key: 'id_category',
+          value: parseInt(req.params.id)
+        }
+      }
+    }
 
+    dbRepo.getById('category', req.params.id, (err, result) => {
+      if (err) {
+        res.status(err.code)
+        res.send(response('ERROR', err.message))
+      } else {
+        dbRepo.getAll('product', options, (err, result) => {
+          if (err) {
+            res.status(err.code)
+            res.send(response('ERROR', err.message))
+          } else {
+            res.send(response('SUCCESS', null, result))
+          }
+        })
+      }
+    })
   },
   insert(req, res) {
     // object destructure

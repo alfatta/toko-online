@@ -17,6 +17,11 @@ module.exports.getAll = (table, options, callback) => {
     query = db.format(query, ['%' + filter.nama + '%'])
   }
 
+  if (filter && filter.by) {
+    query += ` AND ${filter.by.key} = ?`
+    query = db.format(query, [filter.by.value])
+  }
+
   if (sort && sort.by) {
     query += " ORDER BY ?? " + (sort.order ? 'DESC' : 'ASC')
     query = db.format(query, [sort.by, db.escape(sort.order)])

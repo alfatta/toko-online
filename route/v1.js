@@ -11,5 +11,6 @@ route.get('/category', categoryController.getAll)
 route.post('/category', categoryController.insert)
 route.patch('/category/:id', categoryController.update)
 route.delete('/category/:id', categoryController.delete)
+route.get('/category/:id/product', categoryController.getProduct)
 
 module.exports = route
