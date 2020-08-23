@@ -70,7 +70,8 @@ module.exports = {
   },
   update(req, res) {
     const { name } = req.body
-    const data = { name }
+    let data = { name }
+    Object.keys(data).forEach(key => data[key] === undefined && delete data[key]);
 
     dbRepo.update('category', data, req.params.id, (err, result) => {
       if (err) {
